@@ -1,0 +1,9 @@
+# next.js build output
+.next
+
+# dotenv environment
+.env
+
+# dependency
+node_modules/
+
