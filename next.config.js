@@ -1,5 +1,5 @@
 // import Polaris CSS from webpack
-require('donenv').config();
+require('dotenv').config();
 
 const withCSS = require('@zeit/next-css');
 const webpack = require('webpack');
