@@ -4,7 +4,7 @@ const img = 'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg';
 
 const Index = () => (
     <Page>
-        <Layout> 
+        <Layout>
             <EmptyState
                 heading="Discount your products temporarily"
                 action={{
