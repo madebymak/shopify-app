@@ -10,7 +10,7 @@ const GET_PRODUCTS_BY_ID = gql`
             ... on Product {
                 title
                 handle
-                descriptHtml
+                descriptionHtml
                 id
                 images(first: 1) {
                     edges {
