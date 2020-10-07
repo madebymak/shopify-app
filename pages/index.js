@@ -9,6 +9,8 @@ class Index extends React.Component {
     state = { open: false };
 
     render() {
+        const emptyState = !store.get('ids');
+
         return (
             <Page>
                 <TitleBar
@@ -25,19 +27,22 @@ class Index extends React.Component {
                     onSelection={(resources) => this.handleSelection(resources)}
                     onCancel={() => this.setState({ open: false })}
                 />
-                <Layout>
-                    <EmptyState
-                        heading="Discount your products temporarily"
-                        action={{
-                            content: 'Select products',
-                            onAction: () => this.setState({ open: true }),
-                        }}
-                        image={ img }
-                    >
-                        <p>Select products to change their price temporarily</p>
-                    </EmptyState>
-                </Layout>
-                <ResourceListWithProducts />
+                {emptyState ? (
+                    <Layout>
+                        <EmptyState
+                            heading="Discount your products temporarily"
+                            action={{
+                                content: 'Select products',
+                                onAction: () => this.setState({ open: true }),
+                            }}
+                            image={ img }
+                        >
+                            <p>Select products to change their price temporarily</p>
+                        </EmptyState>
+                    </Layout>
+                ) : (
+                    <ResourceListWithProducts />
+                )}
             </Page>
         );
     }
