@@ -12,7 +12,7 @@ const session = require('koa-session');
 dotenv.config();
 const { default: graphQLProxy } = require('@shopify/koa-shopify-graphql-proxy');
 const Router = require('koa-router');
-const {recieveWebhook, registerWebhook} = require('@shopify/koa-shopify-webhooks');
+const {receiveWebhook, registerWebhook} = require('@shopify/koa-shopify-webhooks');
 const { ApiVersion } = require('@shopify/koa-shopify-graphql-proxy');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
@@ -64,14 +64,20 @@ app.prepare().then(() => {
         }),
     );
 
+    const webhook = receiveWebhook({secret: SHOPIFY_API_SECRET_KEY});
+
+    router.post('/webhooks/products/create', webhook, (ctx) => {
+        console.log('received webhook: ', ctx.state.webhook);
+    });
+
     server.use(graphQLProxy({version: ApiVersion.October19}));
-    server.use(verifyRequest());
-    server.use(async (ctx) => {
+    router.get('(.*)', verifyRequest(), async (ctx) => {
         await handle(ctx.req, ctx.res);
         ctx.respond = false;
         ctx.res.statusCode = 200;
-        return
     });
+    server.use(router.allowedMethods());
+    server.use(router.routes());
 
     server.listen(port, () => {
         console.log(`> Ready on http://localhost:${port}`);
